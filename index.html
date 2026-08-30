@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Efus Business Hub</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f5f8;
+      color: #222;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* LOGIN */
+
+    #loginPage {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #42105d, #8a2bb8);
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 430px;
+      padding: 40px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .login-box h1 {
+      text-align: center;
+      color: #42105d;
+      margin-bottom: 10px;
+    }
+
+    .login-box p {
+      text-align: center;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    /* MAIN APP */
+
+    #app {
+      display: none;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100vh;
+      overflow-y: auto;
+      background: #42105d;
+      color: white;
+      padding: 25px 15px;
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 23px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    .menu button {
+      width: 100%;
+      padding: 13px;
+      margin-bottom: 7px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: white;
+      text-align: left;
+    }
+
+    .menu button:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .logout-btn {
+      background: #b92323 !important;
+      margin-top: 20px;
+    }
+
+    .main {
+      margin-left: 250px;
+      padding: 30px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .user-info {
+      background: white;
+      padding: 12px 16px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+
+    /* GENERAL */
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .panel {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+
+    .panel h2,
+    .panel h3 {
+      color: #42105d;
+      margin-bottom: 18px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 15px;
+      box-shadow: 0 3px 12px rgba(0,0,0,.08);
+    }
+
+    .card h3 {
+      color: #666;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
+    .number {
+      color: #42105d;
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+    }
+
+    .primary-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #5c197d;
+      color: white;
+      font-weight: bold;
+    }
+
+    .primary-btn:hover {
+      background: #42105d;
+    }
+
+    .secondary-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #eee;
+      color: #222;
+    }
+
+    .warning {
+      padding: 12px;
+      background: #fff3cd;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      color: #6d5600;
+    }
+
+    .success {
+      padding: 12px;
+      background: #d9f5df;
+      border-radius: 8px;
+      color: #236234;
+      margin-bottom: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+
+    th {
+      color: #42105d;
+    }
+
+    .small-btn {
+      width: auto;
+      padding: 8px 10px;
+      margin: 2px;
+      border: none;
+      border-radius: 6px;
+      background: #5c197d;
+      color: white;
+    }
+
+    .danger-btn {
+      background: #c62828;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .distribution-box {
+      background: #f7f1fa;
+      padding: 18px;
+      border-radius: 12px;
+      margin-top: 15px;
+    }
+
+    .distribution-box h3 {
+      margin-bottom: 15px;
+    }
+
+    .account-balance {
+      margin-top: 8px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #42105d;
+    }
+
+    .manager-note {
+      margin-top: 10px;
+      color: #777;
+      font-size: 13px;
+    }
+
+    @media (max-width: 800px) {
+
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      .menu {
+        display: flex;
+        overflow-x: auto;
+        gap: 5px;
+      }
+
+      .menu button {
+        min-width: 130px;
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 18px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOGIN -->
+
+  <div id="loginPage">
+    <div class="login-box">
+      <h1>Efus Business Hub</h1>
+      <p>Manage all your businesses in one place.</p>
+
+      <input id="username" type="text" placeholder="Username">
+      <input id="password" type="password" placeholder="Password">
+
+      <button class="primary-btn" onclick="login()">Login</button>
+
+      <div class="warning">
+        <strong>Demo only:</strong><br><br>
+        Owner: owner / 1234<br>
+        Manager: manager / 1234
+      </div>
+    </div>
+  </div>
+
+  <!-- APP -->
+
+  <div id="app">
+
+    <div class="sidebar">
+
+      <div class="logo">EFUS HUB</div>
+
+      <div class="menu">
+
+        <button onclick="showSection('dashboard')">🏠 Dashboard</button>
+        <button onclick="showSection('businesses')">🏢 Businesses</button>
+        <button onclick="showSection('finance')">💰 Finance</button>
+        <button onclick="showSection('accounts')">🏦 Accounts</button>
+        <button onclick="showSection('employees')">👥 Employees</button>
+        <button onclick="showSection('government')">🏛️ Government</button>
+        <button onclick="showSection('activities')">📅 Activities</button>
+
+        <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+
+      </div>
+
+    </div>
+
+    <div class="main">
+
+      <div class="topbar">
+
+        <div>
+          <h1 id="pageTitle">Dashboard</h1>
+          <p>Efus Business Hub</p>
+        </div>
+
+        <div class="user-info">
+          Logged in as:
+          <strong id="userRole">Owner</strong>
+        </div>
+
+      </div>
+
+      <!-- DASHBOARD -->
+
+      <div id="dashboard" class="section active">
+
+        <div class="cards">
+
+          <div class="card">
+            <h3>Total Income</h3>
+            <div class="number" id="totalIncome">0 ETB</div>
+          </div>
+
+          <div class="card">
+            <h3>Total Expenses</h3>
+            <div class="number" id="totalExpense">0 ETB</div>
+          </div>
+
+          <div class="card">
+            <h3>Total Profit</h3>
+            <div class="number" id="totalProfit">0 ETB</div>
+          </div>
+
+          <div class="card">
+            <h3>Total Businesses</h3>
+            <div class="number" id="businessCount">0</div>
+          </div>
+
+        </div>
+
+        <div class="panel">
+          <h2>Overall Business Results</h2>
+          <p>
+            This section combines the income, expenses and profit
+            from all businesses.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- BUSINESSES -->
+
+      <div id="businesses" class="section">
+
+        <div class="panel owner-only">
+
+          <h2>Add New Business</h2>
+
+          <div class="row">
+
+            <input id="businessName" placeholder="Business name">
+
+            <select id="businessType">
+              <option value="">Select business type</option>
+              <option>Tour & Travel</option>
+              <option>Nail Salon</option>
+              <option>Cafe</option>
+              <option>Restaurant</option>
+              <option>Other</option>
+            </select>
+
+            <button class="primary-btn" onclick="addBusiness()">
+              Add Business
+            </button>
+
+          </div>
+
+        </div>
+
+        <div class="panel">
+
+          <h2>My Businesses</h2>
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th class="owner-only">Action</th>
+                </tr>
+              </thead>
+
+              <tbody id="businessTable"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- FINANCE -->
+
+      <div id="finance" class="section">
+
+        <div class="panel">
+
+          <h2>Add Income</h2>
+
+          <div class="row">
+
+            <select id="incomeBusiness"></select>
+
+            <input
+              id="incomeAmount"
+              type="number"
+              placeholder="Total income in ETB"
+              oninput="updateDistributionPreview()"
+            >
+
+            <input
+              id="incomeDescription"
+              placeholder="Income description"
+            >
+
+          </div>
+
+          <div class="distribution-box">
+
+            <h3>Divide This Income Between Accounts</h3>
+
+            <div class="row">
+
+              <input
+                id="incomeOperating"
+                type="number"
+                value="0"
+                placeholder="Operating"
+                oninput="updateDistributionPreview()"
+              >
+
+              <input
+                id="incomeSavings"
+                type="number"
+                value="0"
+                placeholder="Savings"
+                oninput="updateDistributionPreview()"
+              >
+
+              <input
+                id="incomeInvestment"
+                type="number"
+                value="0"
+                placeholder="Investment"
+                oninput="updateDistributionPreview()"
+              >
+
+              <input
+                id="incomePersonal"
+                type="number"
+                value="0"
+                placeholder="Personal Expense"
+                oninput="updateDistributionPreview()"
+              >
+
+            </div>
+
+            <p id="distributionPreview">
+              Enter an income amount and divide it.
+            </p>
+
+          </div>
+
+          <br>
+
+          <button class="primary-btn" onclick="addIncome()">
+            Add Income and Distribute Money
+          </button>
+
+        </div>
+
+        <div class="panel">
+
+          <h2>Add Expense</h2>
+
+          <div class="row">
+
+            <select id="expenseBusiness"></select>
+
+            <select id="expenseAccount">
+              <option value="operating">Operating Account</option>
+              <option value="savings">Savings Account</option>
+              <option value="investment">Investment Account</option>
+              <option value="personal">Personal Expense Account</option>
+            </select>
+
+            <input
+              id="expenseAmount"
+              type="number"
+              placeholder="Expense amount"
+            >
+
+            <input
+              id="expenseDescription"
+              placeholder="Expense description"
+            >
+
+          </div>
+
+          <button class="primary-btn" onclick="addExpense()">
+            Add Expense
+          </button>
+
+        </div>
+
+        <div class="panel">
+
+          <h2>Financial Records</h2>
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Business</th>
+                  <th>Amount</th>
+                  <th>Account</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+
+              <tbody id="financeTable"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ACCOUNTS -->
+
+      <div id="accounts" class="section">
+
+        <div class="panel">
+
+          <h2>My Accounts</h2>
+
+          <div class="cards">
+
+            <div class="card">
+              <h3>👤 Personal Expense</h3>
+              <p>Bank: Abisinia Bank</p>
+              <div class="account-balance" id="personalBalance">
+                0 ETB
+              </div>
+              <p class="manager-note">
+                School, shopping and personal uses.
+              </p>
+            </div>
+
+            <div class="card">
+              <h3>💰 Savings</h3>
+              <p>Bank: Ahadu Bank</p>
+              <div class="account-balance" id="savingsBalance">
+                0 ETB
+              </div>
+              <p class="manager-note">
+                Savings and emergency funds.
+              </p>
+            </div>
+
+            <div class="card">
+              <h3>📈 Investment</h3>
+              <p>Bank: Dashen Bank</p>
+              <div class="account-balance" id="investmentBalance">
+                0 ETB
+              </div>
+              <p class="manager-note">
+                Investments and business expansion.
+              </p>
+            </div>
+
+            <div class="card">
+              <h3>🏢 Operating</h3>
+              <p>Bank: Dashen Bank</p>
+              <div class="account-balance" id="operatingBalance">
+                0 ETB
+              </div>
+              <p class="manager-note">
+                Separate account for daily operations.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="panel">
+
+          <h2>Transfer Money Between Accounts</h2>
+
+          <div class="row">
+
+            <select id="transferFrom">
+              <option value="operating">Operating Account</option>
+              <option value="savings">Savings Account</option>
+              <option value="investment">Investment Account</option>
+              <option value="personal">Personal Expense Account</option>
+            </select>
+
+            <select id="transferTo">
+              <option value="savings">Savings Account</option>
+              <option value="operating">Operating Account</option>
+              <option value="investment">Investment Account</option>
+              <option value="personal">Personal Expense Account</option>
+            </select>
+
+            <input
+              id="transferAmount"
+              type="number"
+              placeholder="Transfer amount"
+            >
+
+          </div>
+
+          <button class="primary-btn" onclick="transferMoney()">
+            Transfer Money
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- EMPLOYEES -->
+
+      <div id="employees" class="section">
+
+        <div class="panel">
+
+          <h2>Add Employee</h2>
+
+          <div class="row">
+
+            <input
+              id="employeeName"
+              placeholder="Employee name"
+            >
+
+            <select id="employeeBusiness"></select>
+
+            <input
+              id="employeeSalary"
+              type="number"
+              placeholder="Monthly salary"
+            >
+
+            <input
+              id="salaryDate"
+              type="date"
+            >
+
+          </div>
+
+          <button class="primary-btn" onclick="addEmployee()">
+            Add Employee
+          </button>
+
+        </div>
+
+        <div class="panel">
+
+          <h2>Salary Tracker</h2>
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Business</th>
+                  <th>Salary</th>
+                  <th>Due Date</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody id="employeeTable"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- GOVERNMENT -->
+
+      <div id="government" class="section">
+
+        <div class="panel">
+
+          <h2>Government Payment Reminder</h2>
+
+          <div class="row">
+
+            <select id="governmentBusiness"></select>
+
+            <input
+              id="governmentName"
+              placeholder="Payment name"
+            >
+
+            <input
+              id="governmentAmount"
+              type="number"
+              placeholder="Amount"
+            >
+
+            <input
+              id="governmentDate"
+              type="date"
+            >
+
+          </div>
+
+          <button
+            class="primary-btn"
+            onclick="addGovernmentPayment()"
+          >
+            Add Reminder
+          </button>
+
+        </div>
+
+        <div class="panel">
+
+          <h2>Upcoming Government Payments</h2>
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Business</th>
+                  <th>Payment</th>
+                  <th>Amount</th>
+                  <th>Due Date</th>
+                </tr>
+              </thead>
+
+              <tbody id="governmentTable"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ACTIVITIES -->
+
+      <div id="activities" class="section">
+
+        <div class="panel">
+
+          <h2>Track Activities</h2>
+
+          <div class="row">
+
+            <select id="activityBusiness"></select>
+
+            <select id="activityPeriod">
+              <option>Daily</option>
+              <option>Weekly</option>
+              <option>Monthly</option>
+              <option>Yearly</option>
+            </select>
+
+            <input
+              id="activityText"
+              placeholder="Activity description"
+            >
+
+          </div>
+
+          <button class="primary-btn" onclick="addActivity()">
+            Add Activity
+          </button>
+
+        </div>
+
+        <div class="panel">
+
+          <h2>Activity History</h2>
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Business</th>
+                  <th>Period</th>
+                  <th>Activity</th>
+                </tr>
+              </thead>
+
+              <tbody id="activityTable"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    let currentUser = "";
+
+    let businesses =
+      JSON.parse(localStorage.getItem("efusBusinesses")) || [];
+
+    let finances =
+      JSON.parse(localStorage.getItem("efusFinances")) || [];
+
+    let employees =
+      JSON.parse(localStorage.getItem("efusEmployees")) || [];
+
+    let governmentPayments =
+      JSON.parse(localStorage.getItem("efusGovernment")) || [];
+
+    let activities =
+      JSON.parse(localStorage.getItem("efusActivities")) || [];
+
+    let accounts =
+      JSON.parse(localStorage.getItem("efusAccounts")) || {
+        personal: 0,
+        savings: 0,
+        investment: 0,
+        operating: 0
+      };
+
+
+    function login() {
+
+      const username =
+        document.getElementById("username").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+
+      if (username === "owner" && password === "1234") {
+
+        currentUser = "Owner";
+
+      }
+
+      else if (
+        username === "manager" &&
+        password === "1234"
+      ) {
+
+        currentUser = "Manager";
+
+      }
+
+      else {
+
+        alert("Incorrect username or password.");
+
+        return;
+
+      }
+
+
+      document.getElementById("loginPage")
+        .style.display = "none";
+
+      document.getElementById("app")
+        .style.display = "block";
+
+      document.getElementById("userRole")
+        .textContent = currentUser;
+
+
+      if (currentUser === "Manager") {
+
+        document.querySelectorAll(".owner-only")
+          .forEach(function(item) {
+
+            item.classList.add("hidden");
+
+          });
+
+      }
+
+
+      renderAll();
+
+    }
+
+
+    function logout() {
+
+      location.reload();
+
+    }
+
+
+    function showSection(sectionName) {
+
+      document.querySelectorAll(".section")
+        .forEach(function(section) {
+
+          section.classList.remove("active");
+
+        });
+
+
+      document.getElementById(sectionName)
+        .classList.add("active");
+
+
+      document.getElementById("pageTitle")
+        .textContent =
+        sectionName.charAt(0).toUpperCase()
+        +
+        sectionName.slice(1);
+
+    }
+
+
+    function saveData() {
+
+      localStorage.setItem(
+        "efusBusinesses",
+        JSON.stringify(businesses)
+      );
+
+      localStorage.setItem(
+        "efusFinances",
+        JSON.stringify(finances)
+      );
+
+      localStorage.setItem(
+        "efusEmployees",
+        JSON.stringify(employees)
+      );
+
+      localStorage.setItem(
+        "efusGovernment",
+        JSON.stringify(governmentPayments)
+      );
+
+      localStorage.setItem(
+        "efusActivities",
+        JSON.stringify(activities)
+      );
+
+      localStorage.setItem(
+        "efusAccounts",
+        JSON.stringify(accounts)
+      );
+
+    }
+
+
+    function formatMoney(amount) {
+
+      return Number(amount)
+        .toLocaleString()
+        + " ETB";
+
+    }
+
+
+    /* BUSINESSES */
+
+
+    function addBusiness() {
+
+      if (currentUser !== "Owner") {
+
+        alert("Only the owner can add businesses.");
+
+        return;
+
+      }
+
+
+      const name =
+        document.getElementById("businessName")
+          .value.trim();
+
+      const type =
+        document.getElementById("businessType")
+          .value;
+
+
+      if (!name || !type) {
+
+        alert("Please complete all business information.");
+
+        return;
+
+      }
+
+
+      businesses.push({
+        id: Date.now(),
+        name: name,
+        type: type,
+        status: "Active"
+      });
+
+
+      saveData();
+
+      renderBusinesses();
+
+      updateBusinessSelects();
+
+      updateDashboard();
+
+
+      document.getElementById("businessName")
+        .value = "";
+
+      document.getElementById("businessType")
+        .value = "";
+
+    }
+
+
+    function renderBusinesses() {
+
+      const table =
+        document.getElementById("businessTable");
+
+      table.innerHTML = "";
+
+
+      businesses.forEach(function(business) {
+
+        table.innerHTML += `
+          <tr>
+            <td>${business.name}</td>
+            <td>${business.type}</td>
+            <td>${business.status}</td>
+
+            <td class="owner-only">
+              <button
+                class="small-btn danger-btn"
+                onclick="deleteBusiness(${business.id})"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        `;
+
+      });
+
+
+      if (currentUser === "Manager") {
+
+        document.querySelectorAll(".owner-only")
+          .forEach(function(item) {
+
+            item.classList.add("hidden");
+
+          });
+
+      }
+
+    }
+
+
+    function deleteBusiness(id) {
+
+      if (currentUser !== "Owner") return;
+
+      businesses =
+        businesses.filter(function(business) {
+
+          return business.id !== id;
+
+        });
+
+
+      saveData();
+
+      renderBusinesses();
+
+      updateBusinessSelects();
+
+      updateDashboard();
+
+    }
+
+
+    function updateBusinessSelects() {
+
+      const selects = [
+        "incomeBusiness",
+        "expenseBusiness",
+        "employeeBusiness",
+        "governmentBusiness",
+        "activityBusiness"
+      ];
+
+
+      selects.forEach(function(selectId) {
+
+        const select =
+          document.getElementById(selectId);
+
+
+        select.innerHTML =
+          '<option value="">Select Business</option>';
+
+
+        businesses.forEach(function(business) {
+
+          select.innerHTML +=
+            `<option value="${business.id}">
+              ${business.name}
+            </option>`;
+
+        });
+
+      });
+
+    }
+
+
+    function getBusinessName(id) {
+
+      const business =
+        businesses.find(function(item) {
+
+          return item.id == id;
+
+        });
+
+
+      return business
+        ? business.name
+        : "Not selected";
+
+    }
+
+
+    /* INCOME */
+
+
+    function updateDistributionPreview() {
+
+      const total =
+        Number(
+          document.getElementById("incomeAmount").value
+        ) || 0;
+
+
+      const operating =
+        Number(
+          document.getElementById("incomeOperating").value
+        ) || 0;
+
+
+      const savings =
+        Number(
+          document.getElementById("incomeSavings").value
+        ) || 0;
+
+
+      const investment =
+        Number(
+          document.getElementById("incomeInvestment").value
+        ) || 0;
+
+
+      const personal =
+        Number(
+          document.getElementById("incomePersonal").value
+        ) || 0;
+
+
+      const divided =
+        operating +
+        savings +
+        investment +
+        personal;
+
+
+      const remaining =
+        total - divided;
+
+
+      const preview =
+        document.getElementById(
+          "distributionPreview"
+        );
+
+
+      if (remaining === 0 && total > 0) {
+
+        preview.innerHTML =
+          "✅ Perfect! The full income is divided correctly.";
+
+        preview.style.color = "green";
+
+      }
+
+      else {
+
+        preview.innerHTML =
+          "Remaining to divide: "
+          +
+          formatMoney(remaining);
+
+        preview.style.color =
+          remaining < 0
+            ? "red"
+            : "#6d5600";
+
+      }
+
+    }
+
+
+    function addIncome() {
+
+      const businessId =
+        document.getElementById("incomeBusiness").value;
+
+      const total =
+        Number(
+          document.getElementById("incomeAmount").value
+        );
+
+      const description =
+        document.getElementById("incomeDescription")
+          .value.trim();
+
+
+      const operating =
+        Number(
+          document.getElementById("incomeOperating").value
+        ) || 0;
+
+      const savings =
+        Number(
+          document.getElementById("incomeSavings").value
+        ) || 0;
+
+      const investment =
+        Number(
+          document.getElementById("incomeInvestment").value
+        ) || 0;
+
+      const personal =
+        Number(
+          document.getElementById("incomePersonal").value
+        ) || 0;
+
+
+      const divided =
+        operating +
+        savings +
+        investment +
+        personal;
+
+
+      if (
+        !businessId ||
+        !total ||
+        !description
+      ) {
+
+        alert(
+          "Please select a business and complete the income details."
+        );
+
+        return;
+
+      }
+
+
+      if (divided !== total) {
+
+        alert(
+          "The money divided between accounts must equal the total income."
+        );
+
+        return;
+
+      }
+
+
+      accounts.operating += operating;
+      accounts.savings += savings;
+      accounts.investment += investment;
+      accounts.personal += personal;
+
+
+      finances.push({
+        id: Date.now(),
+        type: "Income",
+        businessId: businessId,
+        amount: total,
+        account: "Distributed",
+        description: description
+      });
+
+
+      saveData();
+
+      renderFinance();
+
+      updateAccounts();
+
+      updateDashboard();
+
+
+      document.getElementById("incomeAmount")
+        .value = "";
+
+      document.getElementById("incomeDescription")
+        .value = "";
+
+      document.getElementById("incomeOperating")
+        .value = 0;
+
+      document.getElementById("incomeSavings")
+        .value = 0;
+
+      document.getElementById("incomeInvestment")
+        .value = 0;
+
+      document.getElementById("incomePersonal")
+        .value = 0;
+
+
+      updateDistributionPreview();
+
+      alert("Income successfully added and distributed.");
+
+    }
+
+
+    /* EXPENSE */
+
+
+    function addExpense() {
+
+      const businessId =
+        document.getElementById("expenseBusiness").value;
+
+      const account =
+        document.getElementById("expenseAccount").value;
+
+      const amount =
+        Number(
+          document.getElementById("expenseAmount").value
+        );
+
+      const description =
+        document.getElementById("expenseDescription")
+          .value.trim();
+
+
+      if (
+        !businessId ||
+        !amount ||
+        !description
+      ) {
+
+        alert(
+          "Please complete all expense information."
+        );
+
+        return;
+
+      }
+
+
+      if (accounts[account] < amount) {
+
+        alert(
+          "There is not enough money in this account."
+        );
+
+        return;
+
+      }
+
+
+      accounts[account] -= amount;
+
+
+      finances.push({
+        id: Date.now(),
+        type: "Expense",
+        businessId: businessId,
+        amount: amount,
+        account: account,
+        description: description
+      });
+
+
+      saveData();
+
+      renderFinance();
+
+      updateAccounts();
+
+      updateDashboard();
+
+
+      document.getElementById("expenseAmount")
+        .value = "";
+
+      document.getElementById("expenseDescription")
+        .value = "";
+
+    }
+
+
+    function renderFinance() {
+
+      const table =
+        document.getElementById("financeTable");
+
+      table.innerHTML = "";
+
+
+      finances
+        .slice()
+        .reverse()
+        .forEach(function(record) {
+
+          table.innerHTML += `
+            <tr>
+              <td>${record.type}</td>
+              <td>${getBusinessName(record.businessId)}</td>
+              <td>${formatMoney(record.amount)}</td>
+              <td>${record.account}</td>
+              <td>${record.description}</td>
+            </tr>
+          `;
+
+        });
+
+    }
+
+
+    /* ACCOUNTS */
+
+
+    function updateAccounts() {
+
+      document.getElementById("personalBalance")
+        .textContent =
+        formatMoney(accounts.personal);
+
+      document.getElementById("savingsBalance")
+        .textContent =
+        formatMoney(accounts.savings);
+
+      document.getElementById("investmentBalance")
+        .textContent =
+        formatMoney(accounts.investment);
+
+      document.getElementById("operatingBalance")
+        .textContent =
+        formatMoney(accounts.operating);
+
+    }
+
+
+    function transferMoney() {
+
+      const from =
+        document.getElementById("transferFrom").value;
+
+      const to =
+        document.getElementById("transferTo").value;
+
+      const amount =
+        Number(
+          document.getElementById("transferAmount").value
+        );
+
+
+      if (!amount || amount <= 0) {
+
+        alert("Enter a valid amount.");
+
+        return;
+
+      }
+
+
+      if (from === to) {
+
+        alert(
+          "Please select two different accounts."
+        );
+
+        return;
+
+      }
+
+
+      if (accounts[from] < amount) {
+
+        alert(
+          "There is not enough money in the source account."
+        );
+
+        return;
+
+      }
+
+
+      accounts[from] -= amount;
+
+      accounts[to] += amount;
+
+
+      saveData();
+
+      updateAccounts();
+
+
+      document.getElementById("transferAmount")
+        .value = "";
+
+
+      alert("Money transferred successfully.");
+
+    }
+
+
+    /* EMPLOYEES */
+
+
+    function addEmployee() {
+
+      const name =
+        document.getElementById("employeeName")
+          .value.trim();
+
+      const businessId =
+        document.getElementById("employeeBusiness")
+          .value;
+
+      const salary =
+        Number(
+          document.getElementById("employeeSalary").value
+        );
+
+      const date =
+        document.getElementById("salaryDate").value;
+
+
+      if (
+        !name ||
+        !businessId ||
+        !salary ||
+        !date
+      ) {
+
+        alert(
+          "Please complete all employee information."
+        );
+
+        return;
+
+      }
+
+
+      employees.push({
+        id: Date.now(),
+        name: name,
+        businessId: businessId,
+        salary: salary,
+        date: date,
+        status: "Unpaid"
+      });
+
+
+      saveData();
+
+      renderEmployees();
+
+
+      document.getElementById("employeeName")
+        .value = "";
+
+      document.getElementById("employeeSalary")
+        .value = "";
+
+      document.getElementById("salaryDate")
+        .value = "";
+
+    }
+
+
+    function renderEmployees() {
+
+      const table =
+        document.getElementById("employeeTable");
+
+      table.innerHTML = "";
+
+
+      employees.forEach(function(employee) {
+
+        table.innerHTML += `
+          <tr>
+            <td>${employee.name}</td>
+            <td>${getBusinessName(employee.businessId)}</td>
+            <td>${formatMoney(employee.salary)}</td>
+            <td>${employee.date}</td>
+            <td>${employee.status}</td>
+
+            <td>
+              <button
+                class="small-btn"
+                onclick="markSalaryPaid(${employee.id})"
+              >
+                Mark Paid
+              </button>
+            </td>
+          </tr>
+        `;
+
+      });
+
+    }
+
+
+    function markSalaryPaid(id) {
+
+      const employee =
+        employees.find(function(item) {
+
+          return item.id === id;
+
+        });
+
+
+      if (employee) {
+
+        employee.status = "Paid";
+
+        saveData();
+
+        renderEmployees();
+
+      }
+
+    }
+
+
+    /* GOVERNMENT */
+
+
+    function addGovernmentPayment() {
+
+      const businessId =
+        document.getElementById("governmentBusiness").value;
+
+      const name =
+        document.getElementById("governmentName")
+          .value.trim();
+
+      const amount =
+        Number(
+          document.getElementById("governmentAmount")
+            .value
+        );
+
+      const date =
+        document.getElementById("governmentDate").value;
+
+
+      if (
+        !businessId ||
+        !name ||
+        !amount ||
+        !date
+      ) {
+
+        alert(
+          "Please complete all government payment information."
+        );
+
+        return;
+
+      }
+
+
+      governmentPayments.push({
+        id: Date.now(),
+        businessId: businessId,
+        name: name,
+        amount: amount,
+        date: date
+      });
+
+
+      saveData();
+
+      renderGovernment();
+
+
+      document.getElementById("governmentName")
+        .value = "";
+
+      document.getElementById("governmentAmount")
+        .value = "";
+
+      document.getElementById("governmentDate")
+        .value = "";
+
+    }
+
+
+    function renderGovernment() {
+
+      const table =
+        document.getElementById("governmentTable");
+
+      table.innerHTML = "";
+
+
+      governmentPayments.forEach(function(payment) {
+
+        table.innerHTML += `
+          <tr>
+            <td>${getBusinessName(payment.businessId)}</td>
+            <td>${payment.name}</td>
+            <td>${formatMoney(payment.amount)}</td>
+            <td>${payment.date}</td>
+          </tr>
+        `;
+
+      });
+
+    }
+
+
+    /* ACTIVITIES */
+
+
+    function addActivity() {
+
+      const businessId =
+        document.getElementById("activityBusiness").value;
+
+      const period =
+        document.getElementById("activityPeriod").value;
+
+      const text =
+        document.getElementById("activityText")
+          .value.trim();
+
+
+      if (
+        !businessId ||
+        !text
+      ) {
+
+        alert(
+          "Please select a business and enter an activity."
+        );
+
+        return;
+
+      }
+
+
+      activities.push({
+        id: Date.now(),
+        businessId: businessId,
+        period: period,
+        text: text
+      });
+
+
+      saveData();
+
+      renderActivities();
+
+
+      document.getElementById("activityText")
+        .value = "";
+
+    }
+
+
+    function renderActivities() {
+
+      const table =
+        document.getElementById("activityTable");
+
+      table.innerHTML = "";
+
+
+      activities
+        .slice()
+        .reverse()
+        .forEach(function(activity) {
+
+          table.innerHTML += `
+            <tr>
+              <td>${getBusinessName(activity.businessId)}</td>
+              <td>${activity.period}</td>
+              <td>${activity.text}</td>
+            </tr>
+          `;
+
+        });
+
+    }
+
+
+    /* DASHBOARD */
+
+
+    function updateDashboard() {
+
+      let income = 0;
+
+      let expense = 0;
+
+
+      finances.forEach(function(record) {
+
+        if (record.type === "Income") {
+
+          income += Number(record.amount);
+
+        }
+
+        else if (
+          record.type === "Expense"
+        ) {
+
+          expense += Number(record.amount);
+
+        }
+
+      });
+
+
+      const profit =
+        income - expense;
+
+
+      document.getElementById("totalIncome")
+        .textContent =
+        formatMoney(income);
+
+
+      document.getElementById("totalExpense")
+        .textContent =
+        formatMoney(expense);
+
+
+      document.getElementById("totalProfit")
+        .textContent =
+        formatMoney(profit);
+
+
+      document.getElementById("businessCount")
+        .textContent =
+        businesses.length;
+
+    }
+
+
+    /* RENDER EVERYTHING */
+
+
+    function renderAll() {
+
+      renderBusinesses();
+
+      updateBusinessSelects();
+
+      renderFinance();
+
+      renderEmployees();
+
+      renderGovernment();
+
+      renderActivities();
+
+      updateAccounts();
+
+      updateDashboard();
+
+    }
+
+  </script>
+
+</body>
+</html>
